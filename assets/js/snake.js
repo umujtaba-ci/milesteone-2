@@ -11,16 +11,16 @@ const gameBackground = new Image();
 gameBackground.src = "../img/gameBackground.jpg";
 
 const gameFood = new Image();
-gameFood.src = "../img/gameFood.jpg";
+gameFood.src = "../img/gameFood.png";
 
 const snakeHead = new Image();
-snakeHead.src = "../img/snakeHead.jpg";
+snakeHead.src = "../img/snakeHead.png";
 
 const snakeBody = new Image();
-snakeBody.src = "../img/snakeBody.jpg";
+snakeBody.src = "../img/snakeBody.png";
 
 const snakeTail = new Image();
-snakeTail.src = "../img/snakeTail.jpg";
+snakeTail.src = "../img/snakeTail.png";
 
 const gameOverBanner = new Image();
 gameOverBanner.src = "../img/gameOverBanner.jpg";
@@ -34,20 +34,20 @@ let foodPos;
 
 function keyPress(e) {
     switch(e.keycode) {
-        case: 37
-        case: 65
+        case 37:
+        case 65:
             direction = {x:-1, y:0};
             break;
-        case: 39
-        case: 68
+        case 39:
+        case 68:
             direction = {x:1, y:0};
             break;
-        case: 38
-        case: 87
+        case 38:
+        case 87:
             direction = {x:0, y:-1};
             break;
-        case: 40
-        case: 83
+        case 40:
+        case 83:
             direction = {x:0, y:1};
             break;
     }
@@ -113,7 +113,7 @@ function eatFoodCheck() {
     }
 }
 
-fucntion updatePosition() {
+function updatePosition() {
     position.x += direction.x;
     position.y += direction.y;
 }
@@ -124,18 +124,24 @@ function updateSnake() {
 } 
 
 function loop() {
-
-    
-
-
-
+    drawGameBackground();
+    drawSnake();
+    drawFood();
+    updatePosition();
+    eatSelfCheck();
+    hitBorderCheck();
+    eatFoodCheck();
+    updateSnake();
 }
 
 function startGame() {
-
+    document.addEventListener("keydown", keyPress);
+    generateFood();
+    var interval = setInterval(loop, 100);
 }
 
 
+startGame();
 
 
 
