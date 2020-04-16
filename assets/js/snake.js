@@ -91,7 +91,6 @@ function eatSelfCheck() {
     for (let element of snake) {
         if (position.x == element.x && position.y == element.y) {
             gameOver();
-            break;
         }
     }
 }
@@ -99,7 +98,6 @@ function eatSelfCheck() {
 function hitBorderCheck() {
     if (position.x < 0 || position.x > 500 || position.y < 0 || position.y < 500) {
         gameOver();
-        break;
     }
 }
 
@@ -107,6 +105,23 @@ function gameOver() {
     clearInterval(interval);
     context.drawImage (gameOver, 0, 200);
 }
+
+function eatFoodCheck() {
+    if (foodPos.x == position.x && foodPos.y == position.y) {
+        snake.unshift(foodPos);
+        generateFood();
+    }
+}
+
+fucntion updatePosition() {
+    position.x += direction.x;
+    position.y += direction.y;
+}
+
+function updateSnake() {
+    snake.unshift(position);
+    snake.pop();
+} 
 
 function loop() {
 
