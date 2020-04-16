@@ -4,26 +4,32 @@ const context = canvas.getContext('2d');
 canvas.height = canvas.getAttribute('height');
 canvas.width = canvas.getAttribute('width');
 
+const menuBackground = new Image();
+menuBackground.src = "../img/menuBackground.jpg";
+
 const gameBackground = new Image();
-gameBackground.src = "../images/gameBackground.jpg";
+gameBackground.src = "../img/gameBackground.jpg";
 
 const gameFood = new Image();
-gameFood.src = "../images/gameFood.jpg";
+gameFood.src = "../img/gameFood.jpg";
 
 const snakeHead = new Image();
-snakeHead.src = "../images/snakeHead.jpg";
+snakeHead.src = "../img/snakeHead.jpg";
 
 const snakeBody = new Image();
-snakeBody.src = "../images/snakeBody.jpg";
+snakeBody.src = "../img/snakeBody.jpg";
 
 const snakeTail = new Image();
-snakeTail.src = "../images/snakeTail.jpg";
+snakeTail.src = "../img/snakeTail.jpg";
+
+const gameOverBanner = new Image();
+gameOverBanner.src = "../img/gameOverBanner.jpg";
 
 const scale = 10;
 
 let direction = {x:0, y:0};
 let position = {x:25, y:25};
-let snake = [{x:25, y:25}];
+let snake = [{x:25, y:25}, {x:24, y:25}, {x:23, y:25}];
 let foodPos;
 
 function keyPress(e) {
@@ -53,32 +59,53 @@ function generateFood() {
     foodPos = {newX, newY};
 
     for (let element of snake) {
-        if(food.x == element.x & food.y == element.y) {
+        if(food.x == element.x && food.y == element.y) {
             generateFood();
             break;
         }
     }
 }
 
-fucntion drawGameBackground() {
-    contect.drawImage (gameBackground, 0, 0);
+function drawGameBackground() {
+    context.drawImage (gameBackground, 0, 0);
 }
 
-function drawSnake {
+function drawSnake() {
     
     for (let element in snake) {
         if (element == 0) {
-            context.drawImage (snakeHead, snake[element].x, snake[element].y)
-        } else if (element == snake.length - 1) {
-            context.drawImage (snakeTail, snake[element].x, snake[element].y)
+            context.drawImage (snakeHead, snake[element].x, snake[element].y);
+        } else if (element == (snake.length - 1) && snake.length > 1) {
+            context.drawImage (snakeTail, snake[element].x, snake[element].y);
         } else {
-            context.drawImage (snakeTail, snake[element].x, snake[element].y)
+            context.drawImage (snakeTail, snake[element].x, snake[element].y);
         }
     }
 }
 
 function drawFood() {
-    context.drawImage (gameFood, foodPos.x, foodPos.y)
+    context.drawImage (gameFood, foodPos.x, foodPos.y);
+}
+
+function eatSelfCheck() {
+    for (let element of snake) {
+        if (position.x == element.x && position.y == element.y) {
+            gameOver();
+            break;
+        }
+    }
+}
+
+function hitBorderCheck() {
+    if (position.x < 0 || position.x > 500 || position.y < 0 || position.y < 500) {
+        gameOver();
+        break;
+    }
+}
+
+function gameOver() {
+    clearInterval(interval);
+    context.drawImage (gameOver, 0, 200);
 }
 
 function loop() {
