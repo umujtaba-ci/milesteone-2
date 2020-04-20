@@ -42,6 +42,22 @@ let position = {x:center, y:center};
 let snake = [{x:center, y:center}];
 let foodPos;
 let interval;
+let menuChoice;
+
+function menuPress(e) {
+    switch(e.keyCode) {
+        case 49:
+        case 97: 
+            menuChoice = 1;
+            startGame();
+            break;
+        case 50:
+        case 98: 
+            menuChoice = 2;
+            startGame();
+            break;
+    }
+}
 
 function keyPress(e) {
     switch(e.keyCode) {
@@ -134,9 +150,30 @@ function hitBorderCheck() {
     }
 }
 
+function endlessBorderCheck() {
+    if (position.x < 0 ) {
+        position.x = tileCount;
+        console.log("1");
+    } else if (position.x >= tileCount) {
+        position.x = 0;
+        console.log("2");
+    } else if (position.y < 0 ) {
+        position.y = tileCount;
+        console.log("3");
+    } else if (position.y >= tileCount) {
+        position.y = 0;
+        console.log("4");
+    }
+}
+
 function gameOver() {
+    document.removeEventListener("keydown", keyPress);
     clearInterval(interval);
-    context.drawImage (gameOverBanner, 0, (canvasWidth/2-100), canvasWidth, 200);
+    context.drawImage (gameOverBanner, 0, (canvasWidth/2-150), canvasWidth, 300);
+    direction = {x:0, y:0};
+    position = {x:center, y:center};
+    snake = [{x:center, y:center}];
+    document.addEventListener("keydown", gameMenu);
 }
 
 function eatFoodCheck() {
@@ -156,7 +193,7 @@ function updateSnake() {
     snake.pop();
 } 
 
-function loop() {
+function loopDeadly() {
     clearBoard();
     drawGameBackground();
     drawSnake();
@@ -168,13 +205,34 @@ function loop() {
     updateSnake();
 }
 
-function startGame() {
-    document.addEventListener("keydown", keyPress);
-    generateFood();
-    interval = setInterval(loop, 100);
+function loopEndless() {
+    clearBoard();
+    drawGameBackground();
+    drawSnake();
+    drawFood();
+    updatePosition();
+    eatSelfCheck();
+    endlessBorderCheck();
+    eatFoodCheck();
+    updateSnake();
 }
 
-startGame();
+function startGame() {
+    document.removeEventListener("keydown", menuPress); 
+    document.addEventListener("keydown", keyPress);
+    generateFood();
+    if (menuChoice == 1) {
+        interval = setInterval(loopDeadly, 100);
+    } else if (menuChoice == 2) {
+        interval = setInterval(loopEndless, 100);
+    }
+}
+
+function gameMenu() {
+    document.removeEventListener("keydown", gameMenu); 
+    context.drawImage (menuBackground, 0, 0, canvasWidth, canvasHeight);
+    document.addEventListener("keydown", menuPress);
+}
 
 
 
