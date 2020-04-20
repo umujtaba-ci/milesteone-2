@@ -60,6 +60,7 @@ div {
 }
 
 button {
+    display: inline-block;
     margin: 0 auto;
     width: 64px;
     height: 64px;

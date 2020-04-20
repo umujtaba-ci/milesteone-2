@@ -44,12 +44,13 @@ gameOverBanner.src = "assets/img/gameOverBanner.png";
 const scale = 25;
 const tileCount = canvasWidth/scale;
 const center = tileCount/2;
-let direction = {x:0, y:0};
-let position = {x:center, y:center};
-let snake = [{x:center, y:center}];
+let direction;
+let position;
+let snake;
 let foodPos;
 let interval;
 let menuChoice;
+let score;
 
 function menuPress(e) {
     switch(e.keyCode) {
@@ -180,10 +181,11 @@ function gameOver() {
     leftBtn.removeEventListener("click", moveLeft);
     rightBtn.removeEventListener("click", moveRight);
     clearInterval(interval);
+    context.font = "bold 26px Verdana";
+    context.textAlign = "center";
+    context.fillStyle = "#ffffff";
+    context.fillText("SCORE: " + score, canvas.width/2, 75);
     context.drawImage (gameOverBanner, 0, (canvasWidth/2-150), canvasWidth, 300);
-    direction = {x:0, y:0};
-    position = {x:center, y:center};
-    snake = [{x:center, y:center}];
     document.addEventListener("keydown", gameMenu);
     upBtn.addEventListener("click", gameMenu);
     downBtn.addEventListener("click", gameMenu);
@@ -197,6 +199,7 @@ function eatFoodCheck() {
     if (foodPos.x == position.x && foodPos.y == position.y) {
         snake.unshift(foodPos);
         generateFood();
+        score += 1;
     }
 }
 
@@ -270,12 +273,17 @@ function startGame() {
     downBtn.addEventListener("click", moveDown);
     leftBtn.addEventListener("click", moveLeft);
     rightBtn.addEventListener("click", moveRight);
-    
+
+    direction = {x:0, y:0};
+    position = {x:center, y:center};
+    snake = [{x:center, y:center}];
+    score = 0;
+
     generateFood();
     if (menuChoice == 1) {
-        interval = setInterval(loopDeadly, 100);
+        interval = setInterval(loopDeadly, 60);
     } else if (menuChoice == 2) {
-        interval = setInterval(loopEndless, 100);
+        interval = setInterval(loopEndless, 60);
     }
 }
 
