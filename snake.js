@@ -70,25 +70,29 @@ function menuPress(e) {
 function keyPress(e) {
     switch(e.keyCode) {
         case 37:
-        case 65: 
+        case 65:
+            e.preventDefault();
             if (direction.x !== 1) {
                 direction = {x:-1, y:0};
             }
             break;
         case 39:
-        case 68: 
+        case 68:
+            e.preventDefault();
             if (direction.x !== -1) {
                 direction = {x:1, y:0};
             }
             break;
         case 38:
         case 87: 
+            e.preventDefault();    
             if (direction.y !== 1) {
                 direction = {x:0, y:-1};
             }
             break;
         case 40:
         case 83: 
+            e.preventDefault();    
             if (direction.y !== -1) {
                 direction = {x:0, y:1};
             }
