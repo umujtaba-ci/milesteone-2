@@ -235,5 +235,7 @@ function gameMenu() {
 }
 
 
+gameMenu();
+
 
 
