@@ -7,6 +7,13 @@ canvas.width = canvasWidth;
 const canvasHeight = parseInt(style.height);
 canvas.height = canvasHeight;
 
+const upBtn = document.getElementById("up");
+const downBtn = document.getElementById("down");
+const leftBtn = document.getElementById("left");
+const rightBtn = document.getElementById("right");
+const oneBtn = document.getElementById("one");
+const twoBtn = document.getElementById("two");
+
 const menuBackground = new Image();
 menuBackground.src = "assets/img/menuBackground.png";
 
@@ -168,12 +175,22 @@ function endlessBorderCheck() {
 
 function gameOver() {
     document.removeEventListener("keydown", keyPress);
+    upBtn.removeEventListener("click", moveUp);
+    downBtn.removeEventListener("click", moveDown);
+    leftBtn.removeEventListener("click", moveLeft);
+    rightBtn.removeEventListener("click", moveRight);
     clearInterval(interval);
     context.drawImage (gameOverBanner, 0, (canvasWidth/2-150), canvasWidth, 300);
     direction = {x:0, y:0};
     position = {x:center, y:center};
     snake = [{x:center, y:center}];
     document.addEventListener("keydown", gameMenu);
+    upBtn.addEventListener("click", gameMenu);
+    downBtn.addEventListener("click", gameMenu);
+    leftBtn.addEventListener("click", gameMenu);
+    rightBtn.addEventListener("click", gameMenu);
+    oneBtn.addEventListener("click", gameMenu);
+    twoBtn.addEventListener("click", gameMenu);
 }
 
 function eatFoodCheck() {
@@ -181,6 +198,32 @@ function eatFoodCheck() {
         snake.unshift(foodPos);
         generateFood();
     }
+}
+
+function moveUp() {
+    direction = {x:0, y:-1};
+}
+
+function moveDown() {
+    direction = {x:0, y:1};
+}
+
+function moveLeft() {
+    direction = {x:-1, y:0};
+}
+
+function moveRight() {
+    direction = {x:1, y:0};
+}
+
+function oneOption() {
+    menuChoice = 1;
+    startGame();
+}
+
+function twoOption() {
+    menuChoice = 2;
+    startGame();
 }
 
 function updatePosition() {
@@ -218,8 +261,16 @@ function loopEndless() {
 }
 
 function startGame() {
+    clearInterval(menuInterval);
     document.removeEventListener("keydown", menuPress); 
+    oneBtn.removeEventListener("click", oneOption);
+    twoBtn.removeEventListener("click", twoOption);
     document.addEventListener("keydown", keyPress);
+    upBtn.addEventListener("click", moveUp);
+    downBtn.addEventListener("click", moveDown);
+    leftBtn.addEventListener("click", moveLeft);
+    rightBtn.addEventListener("click", moveRight);
+    
     generateFood();
     if (menuChoice == 1) {
         interval = setInterval(loopDeadly, 100);
@@ -229,13 +280,20 @@ function startGame() {
 }
 
 function gameMenu() {
-    document.removeEventListener("keydown", gameMenu); 
+    document.removeEventListener("keydown", gameMenu);
+    upBtn.removeEventListener("click", gameMenu);
+    downBtn.removeEventListener("click", gameMenu);
+    leftBtn.removeEventListener("click", gameMenu);
+    rightBtn.removeEventListener("click", gameMenu);
+    oneBtn.removeEventListener("click", gameMenu);
+    twoBtn.removeEventListener("click", gameMenu);
     context.drawImage (menuBackground, 0, 0, canvasWidth, canvasHeight);
     document.addEventListener("keydown", menuPress);
+    oneBtn.addEventListener("click", oneOption);
+    twoBtn.addEventListener("click", twoOption);
 }
 
-
-gameMenu();
+let menuInterval = setInterval(gameMenu, 100);
 
 
 
