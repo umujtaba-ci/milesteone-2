@@ -1,12 +1,14 @@
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext('2d');
+const style = getComputedStyle(canvas);
 
-const canvasWidth = canvas.getAttribute('width');
-const canvasHeight = canvas.getAttribute('height');
+const canvasWidth = parseInt(style.width);
+canvas.width = canvasWidth;
+const canvasHeight = parseInt(style.height);
+canvas.height = canvasHeight;
 
-
-//const menuBackground = new Image();
-//menuBackground.src = "assets/img/menuBackground.jpg";
+const menuBackground = new Image();
+menuBackground.src = "assets/img/menuBackground.png";
 
 const gameBackground = new Image();
 gameBackground.src = "assets/img/gameBackground.png";
@@ -33,14 +35,13 @@ const gameOverBanner = new Image();
 gameOverBanner.src = "assets/img/gameOverBanner.png";
 
 const scale = 25;
-const tileCount = canvas.width/scale;
+const tileCount = canvasWidth/scale;
 const center = tileCount/2;
-
 let direction = {x:0, y:0};
 let position = {x:center, y:center};
 let snake = [{x:center, y:center}];
 let foodPos;
-var interval;
+let interval;
 
 function keyPress(e) {
     switch(e.keyCode) {
@@ -85,11 +86,11 @@ function generateFood() {
 }
 
 function clearBoard() {
-    context.clearRect(0, 0, canvasWidth, canvas.height);
+    context.clearRect(0, 0, canvasWidth, canvasHeight);
 }
 
 function drawGameBackground() {
-    context.drawImage (gameBackground, 0, 0);
+    context.drawImage (gameBackground, 0, 0, canvasWidth, canvasHeight);
 }
 
 function drawSnake() {
